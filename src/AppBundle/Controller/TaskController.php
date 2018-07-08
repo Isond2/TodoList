@@ -7,6 +7,7 @@ use AppBundle\Form\TaskType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class TaskController extends Controller
 {
@@ -15,7 +16,8 @@ class TaskController extends Controller
      */
     public function listAction()
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
+        $user = $this->getUser();
+        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['user' => $user])]);
     }
 
     /**
@@ -28,8 +30,9 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $task->setUser($this->getUser());
 
             $em->persist($task);
             $em->flush();
@@ -51,7 +54,7 @@ class TaskController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
@@ -83,12 +86,68 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Task $task)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($task);
-        $em->flush();
+        $currentUser = $this->getUser();
+        $taskUser = $task->getUser();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        if ($taskUser == $currentUser) {
+
+            $em = $this->getDoctrine()->getManager();
+            $task->setUser(null);
+            $em->remove($task);
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+
+        } elseif ($task->getUser()->getUsername() === 'Annonymous' && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $em = $this->getDoctrine()->getManager();
+            $task->setUser(null);
+            $em->remove($task);
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+
+        } else {
+
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer cette tâche');
+        }
 
         return $this->redirectToRoute('task_list');
+    }
+
+
+    /**
+     * Liste des tâches liées à l'utilisateur annonyme (ROLE_ADMIN Only)
+     *
+     * @Route("/annoymmous-tasks", name="annoymmous_task_list")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function annonymousListAction()
+    {
+        $announymousUser = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(['username' => 'Annonymous']);
+        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['user' => $announymousUser])]);
+    }
+
+    /**
+     * Liaison des tâches sans propriétaires à l'utilisateur annonyme (ROLE_ADMIN Only)
+     *
+     * @Route("/annoymmous-attachement-tasks", name="annoymmous_task_attachement")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function annonymousAttachementAction()
+    {
+        $annonymousTasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['user' => null]);
+        $announymousUser = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(['username' => 'Annonymous']);
+        foreach ($annonymousTasks as $task) {
+
+            $em = $this->getDoctrine()->getManager();
+            $task->setUser($announymousUser);
+
+            $em->persist($task);
+            $em->flush();
+        }
+        $this->addFlash('success', 'La liste est désormais à jours');
+
+        return $this->redirectToRoute('annoymmous_task_list');
     }
 }
