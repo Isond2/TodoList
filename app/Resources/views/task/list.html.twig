@@ -3,7 +3,20 @@
 {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 
 {% block body %}
-    <a href="{{ path('task_create') }}" class="btn btn-info pull-right">Créer une tâche</a>
+    {% if app.request.get('_route') == 'annoymmous_task_list' %}
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="row">
+            <a href="{{ path('annoymmous_task_attachement') }}" class="btn btn-info pull-right">Rafraîchir la liste</a>
+            <a href="{{ path('task_list') }}" class="btn btn-warning pull-right">Revenir à mes tâches</a>
+        </div>
+        {% else %}
+        {% endif %}
+
+    {% else %}
+    <div class="row">
+        <a href="{{ path('task_create') }}" class="btn btn-info pull-right">Créer une tâche</a>
+    </div>
+    {% endif %}
     <div class="row">
         {% for task in tasks %}
         <div class="col-sm-4 col-lg-4 col-md-4">
@@ -29,8 +42,17 @@
         </div>
         {% else %}
             <div class="alert alert-warning" role="alert">
-                Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+                Il n'y a pas encore de tâche enregistrée.
             </div>
         {% endfor %}
+
+
+
+        {% if app.request.get('_route') == 'annoymmous_task_list' %}
+
+
+        {% endif %}
+
+
     </div>
 {% endblock %}

@@ -27,7 +27,8 @@
         "symfony/polyfill-apcu": "^1.0",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^5.0.0",
-        "incenteev/composer-parameter-handler": "^2.0"
+        "incenteev/composer-parameter-handler": "^2.0",
+        "twig/extensions": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

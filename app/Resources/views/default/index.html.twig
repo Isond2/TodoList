@@ -11,4 +11,13 @@
         <a href="{{ path('task_list') }}" class="btn btn-info">Consulter la liste des tâches à faire</a>
         <a href="" class="btn btn-secondary">Consulter la liste des tâches terminées</a>
     </div>
+    {% if is_granted('ROLE_ADMIN') %}
+
+    <h2>Admin section :</h2>
+    <div class="row">
+    	<a href="{{ path('annoymmous_task_list') }}" class="btn btn-info">Consulter la liste des tâches sans propriétaires</a>
+    	<a href="{{ path('user_list') }}"  class="btn btn-success">Consulter la liste des utilisateurs</a>
+    	<a href="{{ path('user_create') }}"  class="btn btn-primary">Créer un utilisateur</a>
+    </div>
+    {% endif %}
 {% endblock %}
