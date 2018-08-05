@@ -37,6 +37,11 @@ class UserController extends Controller
             $user->setPassword($password);
 
             $em->persist($user);
+
+            if ($user->getRoles() === array()) {
+                $user->setRoles(['ROLE_USER']);
+
+            }
             $em->flush();
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
