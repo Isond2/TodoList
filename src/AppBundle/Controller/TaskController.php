@@ -13,6 +13,7 @@ class TaskController extends Controller
 {
     /**
      * @Route("/tasks", name="task_list")
+     * @Security("has_role('ROLE_USER')")
      */
     public function listAction()
     {
@@ -22,6 +23,7 @@ class TaskController extends Controller
 
     /**
      * @Route("/tasks/create", name="task_create")
+     * @Security("has_role('ROLE_USER')")
      */
     public function createAction(Request $request)
     {
@@ -47,42 +49,68 @@ class TaskController extends Controller
 
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
+     * @Security("has_role('ROLE_USER')")
      */
     public function editAction(Task $task, Request $request)
     {
-        $form = $this->createForm(TaskType::class, $task);
+        $currentUser = $this->getUser();
+        $taskUser = $task->getUser();
 
-        $form->handleRequest($request);
+        if ($taskUser == $currentUser) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $form = $this->createForm(TaskType::class, $task);
 
-            $this->addFlash('success', 'La tâche a bien été modifiée.');
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('task_list');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+
+                $this->addFlash('success', 'La tâche a bien été modifiée.');
+
+                return $this->redirectToRoute('task_list');
+            }
+
+            return $this->render('task/edit.html.twig', [
+                'form' => $form->createView(),
+                'task' => $task,
+            ]);
+
+        } else {
+
+            $this->addFlash('error', 'Vous ne pouvez pas modifier cette tâche.');
         }
-
-        return $this->render('task/edit.html.twig', [
-            'form' => $form->createView(),
-            'task' => $task,
-        ]);
+        return $this->redirectToRoute('task_list');
     }
 
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
+     * @Security("has_role('ROLE_USER')")
      */
     public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $currentUser = $this->getUser();
+        $taskUser = $task->getUser();
 
+        if ($taskUser == $currentUser) {
+
+            $task->toggle(!$task->isDone());
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+
+            return $this->redirectToRoute('task_list');
+
+        } else {
+
+            $this->addFlash('error', 'Vous ne pouvez pas marquer cette tâche comme faite.');
+        }
         return $this->redirectToRoute('task_list');
     }
 
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
+     * @Security("has_role('ROLE_USER')")
      */
     public function deleteTaskAction(Task $task)
     {
