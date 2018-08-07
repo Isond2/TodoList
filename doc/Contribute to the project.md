@@ -1,4 +1,4 @@
-#How to contribute to the project
+#How to contribute to the project#
 
   1 - Select an issue or open an issue to work on
   
