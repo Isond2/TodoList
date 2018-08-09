@@ -31,7 +31,6 @@ class SecurityController extends Controller
     {
         // This code is never executed.
     }
-
     /**
      * @Route("/logout", name="logout")
      */

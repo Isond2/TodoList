@@ -18,6 +18,7 @@ class TaskController extends Controller
     public function listAction()
     {
         $user = $this->getUser();
+
         return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['user' => $user])]);
     }
 
@@ -57,7 +58,6 @@ class TaskController extends Controller
         $taskUser = $task->getUser();
 
         if ($taskUser == $currentUser) {
-
             $form = $this->createForm(TaskType::class, $task);
 
             $form->handleRequest($request);
@@ -74,11 +74,9 @@ class TaskController extends Controller
                 'form' => $form->createView(),
                 'task' => $task,
             ]);
-
-        } else {
-
-            $this->addFlash('error', 'Vous ne pouvez pas modifier cette tâche.');
         }
+        $this->addFlash('error', 'Vous ne pouvez pas modifier cette tâche.');
+
         return $this->redirectToRoute('task_list');
     }
 
@@ -93,18 +91,16 @@ class TaskController extends Controller
         $taskUser = $task->getUser();
 
         if ($taskUser == $currentUser) {
-
             $task->toggle(!$task->isDone());
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
             return $this->redirectToRoute('task_list');
-
         } else {
-
             $this->addFlash('error', 'Vous ne pouvez pas marquer cette tâche comme faite.');
         }
+
         return $this->redirectToRoute('task_list');
     }
 
@@ -118,25 +114,20 @@ class TaskController extends Controller
         $taskUser = $task->getUser();
 
         if ($taskUser == $currentUser) {
-
             $em = $this->getDoctrine()->getManager();
             $task->setUser(null);
             $em->remove($task);
             $em->flush();
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
-
         } elseif ($task->getUser()->getUsername() === 'Annonymous' && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-
             $em = $this->getDoctrine()->getManager();
             $task->setUser(null);
             $em->remove($task);
             $em->flush();
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
-
         } else {
-
             $this->addFlash('error', 'Vous ne pouvez pas supprimer cette tâche');
         }
 
@@ -153,6 +144,7 @@ class TaskController extends Controller
     public function annonymousListAction()
     {
         $announymousUser = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(['username' => 'Annonymous']);
+
         return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['user' => $announymousUser])]);
     }
 
@@ -167,7 +159,6 @@ class TaskController extends Controller
         $annonymousTasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['user' => null]);
         $announymousUser = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(['username' => 'Annonymous']);
         foreach ($annonymousTasks as $task) {
-
             $em = $this->getDoctrine()->getManager();
             $task->setUser($announymousUser);
 

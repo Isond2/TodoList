@@ -41,7 +41,7 @@ class UserControllerTest extends WebTestCase
         // User = forbidden
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/users');
         $this->assertStatusCode(403, $client2); // -> forbidden
@@ -49,7 +49,7 @@ class UserControllerTest extends WebTestCase
         // Admin = 200 -> Users List
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/users');
         $this->assertStatusCode(200, $client);
@@ -70,7 +70,7 @@ class UserControllerTest extends WebTestCase
         // User = forbidden
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/users/create');
         $this->assertStatusCode(403, $client2); // -> forbidden
@@ -78,7 +78,7 @@ class UserControllerTest extends WebTestCase
         // Admin = 200 -> Create User
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/users/create');
         $this->assertStatusCode(200, $client);
@@ -106,7 +106,6 @@ class UserControllerTest extends WebTestCase
         $this->assertContains('utilisateur a bien été ajouté.', $client2->getResponse()->getContent()); // -> NewUser1 created with default USER_ROLE
         $crawler = $client2->request('GET', '/users');
         $this->assertSame(1, $crawler->filter('span:contains("ROLE_USER")')->eq(5)->count()); // -> User's list -> NewUser1 -> USER_ROLE (->eq() starts at 0 so its the 6th user)
-
     }
 
     public function testEdit()
@@ -122,7 +121,7 @@ class UserControllerTest extends WebTestCase
         // User = forbidden
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/users/2/edit');
         $this->assertStatusCode(403, $client2); // -> forbidden
@@ -130,7 +129,7 @@ class UserControllerTest extends WebTestCase
         // Admin = 200 -> Create User
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/users/2/edit');
         $this->assertStatusCode(200, $client);
@@ -146,5 +145,4 @@ class UserControllerTest extends WebTestCase
 
         $this->assertContains('utilisateur a bien été modifié', $client2->getResponse()->getContent()); // -> User successfuly edited
     }
-
 }

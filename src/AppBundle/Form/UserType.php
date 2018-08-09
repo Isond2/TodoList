@@ -28,11 +28,11 @@ class UserType extends AbstractType
                 'label'     => 'Type de compte',
                 'choices' => array(
                     'Utilisateur'    => 'ROLE_USER',
-                    'Administrateur' => 'ROLE_ADMIN'
+                    'Administrateur' => 'ROLE_ADMIN',
                 ),
                 'multiple'  => true,
                 'expanded'  => true,
-                'required' => true
+                'required' => true,
             ])
 
         ;

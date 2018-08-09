@@ -41,7 +41,7 @@ class TaskControllerTest extends WebTestCase
         // User = Jean -> tasks
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/tasks');
         $this->assertStatusCode(200, $client2);
@@ -50,7 +50,7 @@ class TaskControllerTest extends WebTestCase
         // User = Admin -> tasks
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/tasks');
         $this->assertStatusCode(200, $client2);
@@ -71,7 +71,7 @@ class TaskControllerTest extends WebTestCase
         // Jean = 200 -> Create Task
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/tasks/create');
         $this->assertStatusCode(200, $client2);
@@ -99,7 +99,7 @@ class TaskControllerTest extends WebTestCase
         // Jean = 200 -> Edit task
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/tasks/4/edit');
         $this->assertStatusCode(200, $client2);
@@ -131,7 +131,7 @@ class TaskControllerTest extends WebTestCase
         // Jean = 200 -> Edit task
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/tasks/5/delete');
         $this->assertStatusCode(200, $client2);
@@ -139,7 +139,7 @@ class TaskControllerTest extends WebTestCase
 
         $client3 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client3->followRedirects();
         $crawler = $client3->request('GET', '/annoymmous-attachement-tasks'); // Admin link all tasks without owners to the Annonymous user
 
@@ -148,7 +148,6 @@ class TaskControllerTest extends WebTestCase
 
         $crawler = $client3->request('GET', '/tasks/15/delete'); // Admin try to delete Annonymous User's task
         $this->assertContains('La tâche a bien été supprimée.', $client3->getResponse()->getContent()); // -> Task successfuly deleted by Admin
-
     }
 
 
@@ -165,7 +164,7 @@ class TaskControllerTest extends WebTestCase
         // Jean = 200 -> Mark task as done
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/tasks/6/toggle');
         $this->assertStatusCode(200, $client2);
@@ -174,7 +173,6 @@ class TaskControllerTest extends WebTestCase
 
         $crawler = $client2->request('GET', '/tasks/15/toggle');
         $this->assertContains('Vous ne pouvez pas marquer cette tâche comme faite.', $client2->getResponse()->getContent());
-
     }
 
 
@@ -191,7 +189,7 @@ class TaskControllerTest extends WebTestCase
         // User = forbidden
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/annoymmous-tasks');
         $this->assertStatusCode(403, $client2);
@@ -199,12 +197,11 @@ class TaskControllerTest extends WebTestCase
         // Admin = 200 -> List of the tasks linked to the annonymous user
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/annoymmous-tasks');
         $this->assertStatusCode(200, $client2);
         $this->assertContains('pas encore de tâche enregistrée.', $client2->getResponse()->getContent());
-
     }
 
     public function testAnnonymousAttachement()
@@ -220,7 +217,7 @@ class TaskControllerTest extends WebTestCase
         // User = forbidden
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Jean',
-            'PHP_AUTH_PW'   => 'Jean',));
+        'PHP_AUTH_PW'   => 'Jean', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/annoymmous-attachement-tasks');
         $this->assertStatusCode(403, $client2);
@@ -228,13 +225,11 @@ class TaskControllerTest extends WebTestCase
         // Admin = 200 -> Refresh the annonymous user's tasks
         $client2 = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'Admin',
-            'PHP_AUTH_PW'   => 'Admin',));
+        'PHP_AUTH_PW'   => 'Admin', ));
         $client2->followRedirects();
         $crawler = $client2->request('GET', '/annoymmous-attachement-tasks');
         $this->assertStatusCode(200, $client2);
         $this->assertContains('La liste est désormais à jours', $client2->getResponse()->getContent()); // -> list updated
         $this->assertContains('Test', $client2->getResponse()->getContent());
-
     }
-
 }

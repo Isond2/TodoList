@@ -11,8 +11,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
-class AppFixture extends Fixture  implements ContainerAwareInterface
+class AppFixture extends Fixture implements ContainerAwareInterface
 {
 
     private $container;
@@ -25,7 +24,7 @@ class AppFixture extends Fixture  implements ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
     //password encoder
-    $encoder = $this->container->get('security.password_encoder');
+        $encoder = $this->container->get('security.password_encoder');
 
     //Users
         //Admin
@@ -180,12 +179,10 @@ class AppFixture extends Fixture  implements ContainerAwareInterface
 
 
 
-    $manager->flush();
-
+        $manager->flush();
     }
-       public function getOrder()
-        {
-            return 1;
-        }
+    public function getOrder()
+    {
+         return 1;
+    }
 }
-?>

@@ -54,12 +54,12 @@ class SecurityControllerTest extends WebTestCase
         $this->assertContains('Connecté en tant que : Admin', $crawler->filter('span')->text());
     }
 
-        public function testLoginCheck()
+    public function testLoginCheck()
     {
         // This code is never executed.
     }
 
-        public function testLogoutCheck()
+    public function testLogoutCheck()
     {
         // This code is never executed.
     }

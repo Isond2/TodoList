@@ -40,7 +40,6 @@ class UserController extends Controller
 
             if ($user->getRoles() === array()) {
                 $user->setRoles(['ROLE_USER']);
-
             }
             $em->flush();
 

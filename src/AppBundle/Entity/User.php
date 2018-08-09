@@ -87,6 +87,7 @@ class User implements UserInterface
     public function setRoles($roles)
     {
         $this->roles = $roles;
+
         return $this;
     }
 
