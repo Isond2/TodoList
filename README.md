@@ -28,8 +28,8 @@ Update code coverage : - vendor/bin/phpunit --coverage-html web/code-coverage
 
 > Warning : to run correctly the code coverage , you need Xdebug 
 
-The authentication process and the user's storage are explained in doc/Authentication.md
+The authentication process and the user's storage are explained in the [Authentication](https://github.com/Isond2/TodoList/blob/master/doc/Authentication.md) file
 
-If you want to contribute ! doc/Contribute to the project.md
+If you want to contribute ! : [Contribute to the project](https://github.com/Isond2/TodoList/blob/master/doc/Contribute%20to%20the%20project.md)
 
 A more complete documentation of the app is also avaliable in pdf : doc/Documentation.pdf
