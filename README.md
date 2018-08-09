@@ -24,6 +24,7 @@ Functional tests :
 Functional tests covers 97.73% of the app (web\code-coverage)
 
 Test the app: - vendor/bin/phpunit
+
 Update code coverage : - vendor/bin/phpunit --coverage-html web/code-coverage
 
 > Warning : to run correctly the code coverage , you need Xdebug 
