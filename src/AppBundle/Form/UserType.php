@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Snowtricks community website.
+ *
+ * GOMEZ José-Adrian j.gomez17@hotmail.fr
+ *
+ */
+
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -10,8 +17,10 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+/** UserType class */
 class UserType extends AbstractType
 {
+    /** BuildForm */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

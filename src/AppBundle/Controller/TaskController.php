@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Snowtricks community website.
+ *
+ * GOMEZ José-Adrian j.gomez17@hotmail.fr
+ *
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
@@ -9,11 +16,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/** TaskController class */
 class TaskController extends Controller
 {
     /**
+     * List of the tasks of the current user ( ROLE_ADMIN )
+     *
      * @Route("/tasks", name="task_list")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @return [<task/list.html>]
      */
     public function listAction()
     {
@@ -23,8 +36,15 @@ class TaskController extends Controller
     }
 
     /**
+     * Create a task ( USER_ROLE )
+     *
      * @Route("/tasks/create", name="task_create")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @param request $request
+     *
+     * @return [<task/create.html>]
      */
     public function createAction(Request $request)
     {
@@ -49,8 +69,16 @@ class TaskController extends Controller
     }
 
     /**
+     * Edit a task ( USER_ROLE )
+     *
      * @Route("/tasks/{id}/edit", name="task_edit")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @param task    $task
+     * @param request $request
+     *
+     * @return [<task/edit.html>]
      */
     public function editAction(Task $task, Request $request)
     {
@@ -81,8 +109,15 @@ class TaskController extends Controller
     }
 
     /**
+     * Toogle a task = mark a task as done ( USER_ ROLE )
+     *
      * @Route("/tasks/{id}/toggle", name="task_toggle")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @param task $task
+     *
+     * @return [<redirect to task_list>]
      */
     public function toggleTaskAction(Task $task)
     {
@@ -97,16 +132,25 @@ class TaskController extends Controller
             $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
             return $this->redirectToRoute('task_list');
-        } else {
-            $this->addFlash('error', 'Vous ne pouvez pas marquer cette tâche comme faite.');
         }
+
+        $this->addFlash('error', 'Vous ne pouvez pas marquer cette tâche comme faite.');
+
 
         return $this->redirectToRoute('task_list');
     }
 
     /**
+     * Delete a task ( USER_ROLE )
+     * Exeption for the annonymous user's tasks , only ROLE_ADMIN can delete them.
+     *
      * @Route("/tasks/{id}/delete", name="task_delete")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @param task $task
+     *
+     * @return [<redirect to task_list>]
      */
     public function deleteTaskAction(Task $task)
     {
@@ -136,10 +180,13 @@ class TaskController extends Controller
 
 
     /**
-     * Liste des tâches liées à l'utilisateur annonyme (ROLE_ADMIN Only)
+     * Annonymous user's task list (ROLE_ADMIN Only)
      *
      * @Route("/annoymmous-tasks", name="annoymmous_task_list")
+     *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return [<redirect to the annonymous user task_list>]
      */
     public function annonymousListAction()
     {
@@ -149,10 +196,13 @@ class TaskController extends Controller
     }
 
     /**
-     * Liaison des tâches sans propriétaires à l'utilisateur annonyme (ROLE_ADMIN Only)
+     * Linking non-owner tasks to the anonymous user (ROLE_ADMIN Only)
      *
      * @Route("/annoymmous-attachement-tasks", name="annoymmous_task_attachement")
+     *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return [<redirect to the annonymous user task_list>]
      */
     public function annonymousAttachementAction()
     {

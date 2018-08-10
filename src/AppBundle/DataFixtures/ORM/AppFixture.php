@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Snowtricks community website.
+ *
+ * GOMEZ José-Adrian j.gomez17@hotmail.fr
+ *
+ */
+
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\User;
@@ -11,16 +18,21 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/** AppFixture class */
 class AppFixture extends Fixture implements ContainerAwareInterface
 {
 
     private $container;
 
+    /** setContainer */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
+    /** 5 User fixtures ( Admin = ROLE_ADMIN , and Jean/Marie/Pierre/Annonymous = ROLE_USER)
+     * And 3 tasks fixtures for each user
+     */
     public function load(ObjectManager $manager)
     {
     //password encoder
@@ -181,6 +193,8 @@ class AppFixture extends Fixture implements ContainerAwareInterface
 
         $manager->flush();
     }
+
+    /** getOrder */
     public function getOrder()
     {
          return 1;

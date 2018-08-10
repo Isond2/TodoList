@@ -1,15 +1,29 @@
 <?php
 
+/*
+ * This file is part of the Snowtricks community website.
+ *
+ * GOMEZ José-Adrian j.gomez17@hotmail.fr
+ *
+ */
+
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/** SecurityController class */
 class SecurityController extends Controller
 {
     /**
+     * The login page
+     *
      * @Route("/login", name="login")
+     *
+     * @param request $request
+     *
+     * @return $this
      */
     public function loginAction(Request $request)
     {

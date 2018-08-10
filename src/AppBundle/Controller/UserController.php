@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the Snowtricks community website.
+ *
+ * GOMEZ José-Adrian j.gomez17@hotmail.fr
+ *
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
@@ -12,8 +19,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class UserController extends Controller
 {
     /**
+     * User's list ( ROLE_ADMIN only )
+     *
      * @Route("/users", name="user_list")
+     *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return [<user/list.html>]
      */
     public function listAction()
     {
@@ -21,8 +33,15 @@ class UserController extends Controller
     }
 
     /**
+     * Create a new user ( ROLE_ADMIN only )
+     *
      * @Route("/users/create", name="user_create")
+     *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param  resuqest $request
+     *
+     * @return [<user/create.html>]
      */
     public function createAction(Request $request)
     {
@@ -52,8 +71,16 @@ class UserController extends Controller
     }
 
     /**
+     * Edit user ( ROLE_ADMIN only )
+     *
      * @Route("/users/{id}/edit", name="user_edit")
+     *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param $id
+     * @param request $request
+     *
+     * @return [<user/edit.html>]
      */
     public function editAction($id, Request $request)
     {
