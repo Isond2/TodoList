@@ -6,7 +6,7 @@ This project is part of the "php/symfony" training.
 
 TodoList is a tasks management app where each user can connect to his account and set/mark as done/delete his tasks.
 
-Install :
+### Install :
 
 - Clone the repository
 - run $ php composer install
@@ -21,15 +21,17 @@ Load the sample data :
 - $ php bin/console doctrine:fixtures:load
 
 
-Functional tests :
+### Functional tests :
 
-Functional tests covers 97.73% of the app (web\code-coverage)
+Functional tests covers _97.73%_ of the app (web\code-coverage)
 
 Test the app: - vendor/bin/phpunit
 
 Update code coverage : - vendor/bin/phpunit --coverage-html web/code-coverage
 
 > Warning : to run correctly the code coverage , you need Xdebug 
+
+### Documentation :
 
 The authentication process and the user's storage are explained in the [Authentication](https://github.com/Isond2/TodoList/blob/master/doc/Authentication.md) file
 
